@@ -39,7 +39,7 @@ jobs:
 
       - name: Setup GCP Credentials
         run: |
-          echo "${{ secrets.GCP_SA_CREDENTIALS }}" > gcp-credentials.json
+          echo "${{ secrets.GCP_SA_CREDENTIALS }}" | jq '.' > gcp-credentials.json
           echo "GCP credentials file created."
         env:
           GCP_SA_CREDENTIALS: ${{ secrets.GCP_SA_CREDENTIALS }}
