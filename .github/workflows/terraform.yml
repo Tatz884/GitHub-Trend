@@ -31,26 +31,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+  
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: latest
-
-      - name: Move to Terraform directory
-        run: cd terraform
-
+  
       - name: Terraform Init
-        run: terraform init
-
+        run: cd terraform && terraform init
+  
       - name: Terraform Plan
-        run: terraform plan
-
+        run: cd terraform && terraform plan
+  
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: cd terraform && terraform apply -auto-approve
         env:
           TF_VAR_some_secret: ${{ secrets.SOME_SECRET }} # Example for setting up secrets
-
+  
       - name: Terraform Destroy
-        run: terraform destroy
+        run: cd terraform && terraform destroy
         # Here you can add any additional steps if necessary. Make sure to properly indent them as part of the 'steps' list.
+  
