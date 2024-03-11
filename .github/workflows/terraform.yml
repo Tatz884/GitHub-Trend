@@ -26,28 +26,31 @@ on:
                 push: true
                 tags: tty884/github-trend:latest
       
-  terraform:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+        terraform:
+          runs-on: ubuntu-latest
+          steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: latest
+          - name: Setup Terraform
+            uses: hashicorp/setup-terraform@v1
+            with:
+              terraform_version: latest
 
-    - name: Terraform Init
-      run: terraform init
+          - name: Move to Terraform directory
+            run: cd terraform
 
-    - name: Terraform Plan
-      run: terraform plan
+          - name: Terraform Init
+            run: terraform init
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      env:
-        TF_VAR_some_secret: ${{ secrets.SOME_SECRET }} # Example for setting up secrets
+          - name: Terraform Plan
+            run: terraform plan
 
-    - name: Terraform Destroy
-      run: terraform destroy
-    # Add any additional steps if nec
+          - name: Terraform Apply
+            run: terraform apply -auto-approve
+            env:
+              TF_VAR_some_secret: ${{ secrets.SOME_SECRET }} # Example for setting up secrets
+
+          - name: Terraform Destroy
+            run: terraform destroy
+          # Add any additional steps if nec
