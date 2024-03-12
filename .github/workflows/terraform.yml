@@ -44,6 +44,11 @@ jobs:
           name: "gcp-credentials.json"
           json: ${{ secrets.GCP_SA_CREDENTIALS }}
           dir: "."
+
+      - name: Terraform Destroy
+        run: cd terraform && terraform destroy
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
   
       - name: Terraform Init
         run: cd terraform && terraform init
