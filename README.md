@@ -1,1 +1,1 @@
-Hi! This is GitHub star visualization project.
+Hi! This is GitHub star visualization project. What projects are popular now?
