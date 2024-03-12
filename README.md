@@ -1,1 +1,1 @@
-Hi!
+Hi! This is GitHub star visualization project
