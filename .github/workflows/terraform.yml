@@ -51,12 +51,12 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
 
       - name: Terraform Destroy
-        run: cd terraform && terraform destroy
+        run: cd terraform && terraform destroy -auto-approve
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
   
       - name: Terraform Plan
-        run: cd terraform && terraform plan
+        run: cd terraform && terraform plan -auto-approve
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
   
@@ -67,7 +67,7 @@ jobs:
   
   
       - name: Terraform Destroy
-        run: cd terraform && terraform destroy
+        run: cd terraform && terraform destroy -auto-approve
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
         # Here you can add any additional steps if necessary. Make sure to properly indent them as part of the 'steps' list.
