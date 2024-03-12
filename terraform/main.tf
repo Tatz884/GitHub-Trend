@@ -7,6 +7,11 @@ terraform {
     # Cloud Run support was added on 3.3.0
     google = ">= 3.3"
   }
+  backend "gcs" {
+    bucket  = "github-trend-ringed-reach-414622"
+    prefix  = "terraform/state/"
+    credentials = "./secrets/ringed-reach-414622-696337488ab4.json"
+  }
 }
 
 provider "google" {
