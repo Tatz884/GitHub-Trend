@@ -56,7 +56,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
   
       - name: Terraform Plan
-        run: cd terraform && terraform plan -auto-approve
+        run: cd terraform && terraform plan
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
   
