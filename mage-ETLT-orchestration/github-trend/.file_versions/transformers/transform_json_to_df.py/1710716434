@@ -1,0 +1,50 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+from pyspark.sql import Row
+
+if 'transformer' not in globals():
+    from mage_ai.data_preparation.decorators import transformer
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+
+@transformer
+def transform(data, *args, **kwargs):
+    """
+    Template code for a transformer block.
+
+    Add more parameters to this function if this block has multiple parent blocks.
+    There should be one parameter for each output variable from each parent block.
+
+    Args:
+        data: The output from the upstream parent block
+        args: The output from any additional upstream blocks (if applicable)
+
+    Returns:
+        Anything (e.g. data frame, dictionary, array, int, str, etc.)
+    """
+    # Specify your transformation logic here
+
+
+    # Initialize SparkSession
+    spark = SparkSession.builder.appName("Dictionary to DataFrame").getOrCreate()
+
+    # Step 2: Parallelize the dictionary object to create an RDD
+    edges_list = data['search']['edges']
+    edges_rdd = spark.sparkContext.parallelize(edges_list)
+
+    # Convert each dictionary in the RDD to a Row object, flattening the structure as needed
+    edges_row_rdd = edges_rdd.map(lambda x: Row(name=x['node']['name'], stargazers=x['node']['stargazers']['totalCount']))
+
+    # Step 3: Convert the RDD of Row objects to a DataFrame
+    edges_df = spark.createDataFrame(edges_row_rdd)kContext.parallelize(edges_list)
+    
+    return eedf
+
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'

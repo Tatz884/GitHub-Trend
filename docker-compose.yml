@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  github-trend:
+    build: 
+      context: ./mage-ETLT-orchestration/
+      dockerfile: Dockerfile # Only necessary if your Dockerfile has a different name or is in a different directory
+    image: github-trend:latest
+    environment:
+      SPARK_MASTER_HOST: 'local'
+      GITHUB_API_TOKEN: ${GITHUB_API_TOKEN} # on local machine it will refer to the variable .env,  and in deployment it will be an empty string initally, that is overriden by the GCP secret manager
+    ports:
+      - '6789:6789'
+    volumes:
+      - './mage-ETLT-orchestration/:/home/src/'
+    command: /app/run_app.sh mage start github-trend
+
