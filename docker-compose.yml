@@ -4,7 +4,7 @@ services:
     build: 
       context: ./mage-ETLT-orchestration/
       dockerfile: Dockerfile # Only necessary if your Dockerfile has a different name or is in a different directory
-    image: github-trend:latest
+    image: tty884/github-trend:latest
     environment:
       SPARK_MASTER_HOST: 'local'
       GITHUB_API_TOKEN: ${GITHUB_API_TOKEN} # on local machine it will refer to the variable .env,  and in deployment it will be an empty string initally, that is overriden by the GCP secret manager
