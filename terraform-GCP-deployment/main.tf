@@ -10,7 +10,7 @@ terraform {
   backend "gcs" {
     bucket  = "github-trend-ringed-reach-414622"
     prefix  = "terraform/state/"
-    credentials = "./secrets/ringed-reach-414622-696337488ab4.json" # for local environment. In deployment, credentials are injected from GitHub Action
+    # credentials = "./secrets/ringed-reach-414622-696337488ab4.json" # for local environment. In deployment, credentials are injected from GitHub Action
   }
 }
 
