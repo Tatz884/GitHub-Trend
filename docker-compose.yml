@@ -7,7 +7,7 @@ services:
     image: tty884/github-trend:latest
     environment:
       SPARK_MASTER_HOST: 'local'
-      GITHUB_API_TOKEN: ${GITHUB_API_TOKEN} # on local machine it will refer to the variable .env,  and in deployment it will be an empty string initally, that is overriden by the GCP secret manager
+      GITHUB_API_TOKEN: ${GITHUB_API_TOKEN} # on local machine it will refer to the variable .env, and in deployment it will be an empty string initally, that is overriden by the GCP secret manager
     ports:
       - '6789:6789'
     volumes:

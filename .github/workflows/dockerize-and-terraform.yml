@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v3
   
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: latest
 
@@ -57,26 +57,31 @@ jobs:
         run: cd terraform-GCP-deployment && terraform init
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
+          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
 
       - name: Terraform Destroy
         run: cd terraform-GCP-deployment && terraform destroy -auto-approve
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
+          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
   
       - name: Terraform Plan
         run: cd terraform-GCP-deployment && terraform plan
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
+          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
   
       - name: Terraform Apply
         run: cd terraform-GCP-deployment && terraform apply -auto-approve
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
+          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
   
   
       - name: Terraform Destroy
         run: cd terraform-GCP-deployment && terraform destroy -auto-approve
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
+          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
         # Here you can add any additional steps if necessary. Make sure to properly indent them as part of the 'steps' list.
   

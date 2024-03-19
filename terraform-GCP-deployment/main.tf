@@ -77,9 +77,15 @@ resource "google_secret_manager_secret" "secret" {
   }
 }
 
+variable "github_api_token" {
+  description = "GitHub API token"
+  type        = string
+  sensitive   = true
+}
+
 resource "google_secret_manager_secret_version" "secret_version_data" {
   secret      = google_secret_manager_secret.secret.id
-  secret_data = file("/home/tatz884/portfolio/github-trend/util/secrets/GitHub-API-token.txt")
+  secret_data = var.github_api_token
 }
 
 # Create the Cloud Run service
@@ -188,7 +194,7 @@ resource "google_cloud_run_v2_service" "run_service" {
   # Waits for the Cloud Run API to be enabled, and buckets
   depends_on = [
     google_project_service.cloudrun,
-    google_storage_bucket.github_trend,
+    google_storage_bucket.github_trend_data,
     google_service_account.cloud_run_account,
     google_secret_manager_secret_version.secret_version_data
   ]
@@ -198,12 +204,12 @@ resource "google_cloud_run_v2_service" "run_service" {
 
 
 # GCS Bucket Creation
-resource "google_storage_bucket" "github_trend" {
-  name                        = "github-trend"
+resource "google_storage_bucket" "github_trend_data" {
+  name                        = "${var.app_name}-data"
   location                    = var.region
   storage_class               = "STANDARD"
   uniform_bucket_level_access = true
-  force_destroy               = false
+  force_destroy               = true
 
   lifecycle_rule {
     condition {
@@ -217,7 +223,7 @@ resource "google_storage_bucket" "github_trend" {
 
 # Bucket IAM Policy for Cloud Run access
 resource "google_storage_bucket_iam_member" "cloud_run_access" {
-  bucket = google_storage_bucket.github_trend.name
+  bucket = google_storage_bucket.github_trend_data.name
   role   = "roles/storage.objectViewer"
   member = "serviceAccount:${google_service_account.cloud_run_account.account_id}@${var.project_id}.iam.gserviceaccount.com"
 }
