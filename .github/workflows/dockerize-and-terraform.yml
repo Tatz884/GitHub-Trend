@@ -58,6 +58,7 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
           TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
+          TF_LOG: TRACE
 
       # - name: Terraform Destroy
       #   run: cd terraform-GCP-deployment && terraform destroy -auto-approve
