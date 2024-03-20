@@ -34,7 +34,7 @@ jobs:
         # Only push for non-PR events for security
 
   terraform:
-    # needs: build_and_push_docker
+    needs: build_and_push_docker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
