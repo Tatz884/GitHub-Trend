@@ -22,10 +22,10 @@ RUN python3 /app/install_other_dependencies.py --path ${USER_CODE_PATH}
 
 ENV PYTHONPATH="${PYTHONPATH}:${USER_CODE_PATH}"
 
-# Add your custom entrypoint script
-RUN chmod +x /copying_credentials.sh
+# # Add your custom entrypoint script
+# RUN chmod +x /copying_credentials.sh
 
-# Set your custom entrypoint script
-ENTRYPOINT ["/copying_credentials.sh"]
+# # Set your custom entrypoint script
+# ENTRYPOINT ["/copying_credentials.sh"]
 
 CMD ["/bin/sh", "-c", "/app/run_app.sh"]
