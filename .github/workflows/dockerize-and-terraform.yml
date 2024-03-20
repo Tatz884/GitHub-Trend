@@ -79,10 +79,10 @@ jobs:
           TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
   
   
-      - name: Terraform Destroy
-        run: cd terraform-GCP-deployment && terraform destroy -auto-approve
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
-          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
-        # Here you can add any additional steps if necessary. Make sure to properly indent them as part of the 'steps' list.
+      # - name: Terraform Destroy
+      #   run: cd terraform-GCP-deployment && terraform destroy -auto-approve
+      #   env:
+      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
+      #     TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
+      #   # Here you can add any additional steps if necessary. Make sure to properly indent them as part of the 'steps' list.
   
