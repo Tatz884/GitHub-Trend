@@ -103,7 +103,7 @@ variable "GOOGLE_APPLICATION_CREDENTIALS" {
 
 resource "google_secret_manager_secret_version" "gcp_credentials_version" {
   secret      = google_secret_manager_secret.gcp_credentials.id
-  secret_data = var.GOOGLE_APPLICATION_CREDENTIALS
+  secret_data = file(var.GOOGLE_APPLICATION_CREDENTIALS)
 }
 
 # Create the Cloud Run service
@@ -155,6 +155,11 @@ resource "google_cloud_run_v2_service" "run_service" {
       volume_mounts {
         name       = "gcp-credentials"
         mount_path = "/home/src/secrets"
+      }
+
+      env {
+        name = "path_to_keyfile"
+        value = "/home/src/secrets/gcp-credentials"
       }
       
       resources {
