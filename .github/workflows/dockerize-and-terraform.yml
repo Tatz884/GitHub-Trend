@@ -52,20 +52,18 @@ jobs:
           name: "gcp-credentials.json"
           json: ${{ secrets.GCP_SA_CREDENTIALS }}
           dir: "."
-
-      - name: Terraform Destroy
-        run: cd terraform-GCP-deployment && terraform destroy -auto-approve
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
-          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
-
+  
       - name: Terraform Init
         run: cd terraform-GCP-deployment && terraform init
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
           TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
 
-
+      - name: Terraform Destroy
+        run: cd terraform-GCP-deployment && terraform destroy -auto-approve
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
+          TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
   
       - name: Terraform Plan
         run: cd terraform-GCP-deployment && terraform plan
