@@ -1,0 +1,4 @@
+version: 0.1.1
+default:
+  # GOOGLE_SERVICE_ACC_KEY_FILEPATH: "/home/src/ringed-reach-414622-ee72ce201a13.json"
+  GOOGLE_LOCATION: ASIA-NORTHEAST1 # Optional

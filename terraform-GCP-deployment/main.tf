@@ -70,7 +70,7 @@ resource "google_service_account" "cloud_run_account" {
   display_name = "Cloud Run Service Account"
 }
 
-resource "google_secret_manager_secret" "secret" {
+resource "google_secret_manager_secret" "github_api_token" {
   secret_id = "GitHub-API-token"
   replication {
     auto{}
@@ -83,9 +83,27 @@ variable "github_api_token" {
   sensitive   = true
 }
 
-resource "google_secret_manager_secret_version" "secret_version_data" {
-  secret      = google_secret_manager_secret.secret.id
+resource "google_secret_manager_secret_version" "github_api_token_version" {
+  secret      = google_secret_manager_secret.github_api_token.id
   secret_data = var.github_api_token
+}
+
+resource "google_secret_manager_secret" "gcp_credentials" {
+  secret_id = "gcp-credentials"
+  replication {
+    auto{}
+  }
+}
+
+variable "GOOGLE_APPLICATION_CREDENTIALS" {
+  description = "Google Application credentials"
+  type        = string
+  sensitive   = true
+}
+
+resource "google_secret_manager_secret_version" "gcp_credentials_version" {
+  secret      = google_secret_manager_secret.gcp_credentials.id
+  secret_data = var.GOOGLE_APPLICATION_CREDENTIALS
 }
 
 # Create the Cloud Run service
@@ -119,10 +137,24 @@ resource "google_cloud_run_v2_service" "run_service" {
       }
     }
 
+        # Define the volume where the secret is stored
+    volumes {
+      name = "gcp-credentials"
+      secret {
+        secret = "gcp-credentials" # Replace with the name of your secret in Google Secret Manager
+      }
+    }
+
     containers {
       image = var.docker_image
       ports {
         container_port = 6789
+      }
+
+      # Mount the secret as a volume
+      volume_mounts {
+        name       = "gcp-credentials"
+        mount_path = "/home/src/secrets"
       }
       
       resources {
@@ -152,7 +184,16 @@ resource "google_cloud_run_v2_service" "run_service" {
         name = "GITHUB_API_TOKEN" # Use a descriptive name for your environment variable
         value_source {
           secret_key_ref {
-            secret = google_secret_manager_secret.secret.id
+            secret = google_secret_manager_secret.github_api_token.id
+            version = "1"
+          }
+        }
+      }
+      env {
+        name = "GOOGLE_APPLICATION_CREDENTIALS_JSON" # Use a descriptive name for your environment variable
+        value_source {
+          secret_key_ref {
+            secret = google_secret_manager_secret.gcp_credentials.id
             version = "1"
           }
         }
@@ -196,7 +237,7 @@ resource "google_cloud_run_v2_service" "run_service" {
     google_project_service.cloudrun,
     google_storage_bucket.github_trend_data,
     google_service_account.cloud_run_account,
-    google_secret_manager_secret_version.secret_version_data
+    google_secret_manager_secret_version.github_api_token_version
   ]
 }
 
@@ -243,7 +284,7 @@ resource "google_project_iam_binding" "secret_accessor" {
   members = [
     "serviceAccount:${google_service_account.cloud_run_account.account_id}@${var.project_id}.iam.gserviceaccount.com",
   ]
-  depends_on=[google_secret_manager_secret.secret]
+  depends_on=[google_secret_manager_secret.github_api_token]
 }
 
 # Display the service IP

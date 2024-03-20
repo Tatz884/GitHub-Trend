@@ -1,4 +1,3 @@
 mage-ai-terraform-templates/
 *secrets/
 *.env
-*io_config.yaml
