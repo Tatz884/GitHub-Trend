@@ -74,7 +74,6 @@ jobs:
       - name: Terraform Apply
         run: cd terraform-GCP-deployment && terraform apply -auto-approve
         env:
-          TF_LOG: DEBUG
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-credentials.json
           TF_VAR_github_api_token: ${{ secrets.API_TOKEN_GITHUB }}
   
