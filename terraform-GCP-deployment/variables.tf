@@ -20,16 +20,22 @@ variable "project_id" {
   default     = "ringed-reach-414622"
 }
 
+variable "multi_region" {
+  type        = string
+  description = "The default compute region"
+  default     = "US"
+}
+
 variable "region" {
   type        = string
   description = "The default compute region"
-  default     = "asia-northeast1"
+  default     = "us-west1"
 }
 
 variable "zone" {
   type        = string
   description = "The default compute zone"
-  default     = "asia-northeast1-b"
+  default     = "us-west1-b"
 }
 
 variable "repository" {

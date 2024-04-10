@@ -93,24 +93,27 @@ resource "google_secret_manager_secret" "gcp_credentials" {
   replication {
     auto{}
   }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
-variable "GOOGLE_APPLICATION_CREDENTIALS" {
-  description = "Google Application credentials"
-  type        = string
-  sensitive   = true
-}
+# variable "GOOGLE_APPLICATION_CREDENTIALS" {
+#   description = "Google Application credentials"
+#   type        = string
+#   sensitive   = true
+# }
 
-resource "google_secret_manager_secret_version" "gcp_credentials_version" {
-  secret      = google_secret_manager_secret.gcp_credentials.id
-  secret_data = file(var.GOOGLE_APPLICATION_CREDENTIALS)
-}
+# resource "google_secret_manager_secret_version" "gcp_credentials_version" {
+#   secret      = google_secret_manager_secret.gcp_credentials.id
+#   secret_data = file(var.GOOGLE_APPLICATION_CREDENTIALS)
+# }
 
 # Create the Cloud Run service
 resource "google_cloud_run_v2_service" "run_service" {
   name     = var.app_name
   location = var.region
-  ingress = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
+  ingress = "INGRESS_TRAFFIC_ALL" // change it to "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" after releaseterra
   launch_stage = "BETA"
   
 

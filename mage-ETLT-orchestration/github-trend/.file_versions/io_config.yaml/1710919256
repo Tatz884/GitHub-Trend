@@ -1,0 +1,5 @@
+version: 0.1.1
+default:
+  
+  GOOGLE_LOCATION: ASIA-NORTHEAST1 # Optional
+  GOOGLE_SERVICE_ACC_KEY_FILEPATH: "/home/src/secrets/gcp-credentials"

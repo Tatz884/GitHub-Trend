@@ -1,0 +1,9 @@
+# models/sources/github_archive.yml
+version: 2
+
+sources:
+  - name: github_archive
+    database: your_bigquery_database
+    schema: githubarchive
+    tables:
+      - name: day

@@ -1,0 +1,127 @@
+import io
+import pandas as pd
+import requests
+import json
+import os
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+@custom
+def load_data_from_api(repository_list, *args, **kwargs):
+    """
+    Template for loading data from API
+    
+    argument:
+    repository_list -
+    the list of tuples that have owner name and repo name, like
+    repository_list = [
+        ("shafiab", "HashtagCashtag"),
+        ("anpigon", "obsidian-book-search-plugin"),
+        # Add more tuples (owner, repository) as needed
+    ]
+    """
+    token = os.getenv('GITHUB_API_TOKEN')
+
+    # repository_list = [
+    #     ("shafiab", "HashtagCashtag"),
+    #     ("anpigon", "obsidian-book-search-plugin"),
+    #     # Add more tuples (owner, repository) as needed
+    # ]
+
+    # Function to execute GraphQL queries
+    def run_query(query, headers):
+        """Function to execute GraphQL queries."""
+        request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
+        if request.status_code == 200:
+            return request.json()
+        else:
+            raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+
+    def construct_query(repository_list, cursors):
+        """Function to construct a batch query for a chunk of repositories."""
+        query_parts = []
+        for idx, (owner, repo) in enumerate(repository_list):
+            query_parts.append(f'''
+            repo{idx}: repository(owner: "{owner}", name: "{repo}") {{
+                primaryLanguage {{
+                    name
+                }}
+                repositoryTopics(first: 100) {{
+                    nodes {{
+                        topic {{
+                            name
+                        }}
+                    }}
+                }}
+                owner {{
+                    avatarUrl
+                }}
+                stargazers {{
+                    totalCount
+                }}
+            }}''')
+        query_parts.append('''
+            rateLimit {
+                cost
+                remaining
+                resetAt
+            }
+        ''')
+        return "{" + " ".join(query_parts) + "}"
+
+    def chunk_repository_list(repository_list, chunk_size=100):
+        """Yield successive chunk_size chunks from repository_list."""
+        for i in range(0, len(repository_list), chunk_size):
+            yield repository_list[i:i + chunk_size]
+
+    def fetch_repository_details(repository_list):
+        """Main function to fetch primary languages and topics for all repository chunks."""
+        repository_details = {}
+        cursors = {}  # This can be removed if not used for pagination in topics or languages
+        headers = {"Authorization": f"Bearer {token}"}
+
+        for repo_chunk in chunk_repository_list(repository_list):
+            query = construct_query(repo_chunk, cursors)
+            result = run_query(query, headers)
+
+            for idx, (owner, repo) in enumerate(repo_chunk):
+                key = f"{owner}/{repo}"
+                repo_data = result['data'].get(f'repo{idx}', {})
+                if not repo_data:
+                    continue
+                
+                # If 'primaryLanguage' exists and is not None, get 'name'; otherwise, default to None
+                primary_language = repo_data.get('primaryLanguage', {}).get('name', None) if repo_data.get('primaryLanguage') is not None else None
+
+                # Processing topics
+                topics = [node['topic']['name'] for node in repo_data.get('repositoryTopics', {}).get('nodes', [])]
+                
+                # Processing owner's picture URL
+                owner_picture_url = repo_data.get('owner', {}).get('avatarUrl', None) if repo_data.get('avatarUrl') is not None else None
+                
+                # Processing the star count
+                star_count = repo_data.get('stargazers', {}).get('totalCount', 0) if repo_data.get('stargazers') is not None else None
+
+                repository_details[key] = {
+                    'primaryLanguage': primary_language,
+                    'topics': topics,
+                    'ownerPictureUrl': owner_picture_url,
+                    'starCount': star_count
+                }
+
+
+        return repository_details
+
+    repo_details = fetch_repository_details(repository_list)
+
+    return repo_details
+
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'

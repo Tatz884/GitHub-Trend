@@ -1,0 +1,125 @@
+import io
+import pandas as pd
+import requests
+import json
+import os
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+@data_loader
+def load_data_from_api(repository_list, *args, **kwargs):
+    """
+    Template for loading data from API
+    
+    argument:
+    repository_list -
+    the list of tuples that have owner name and repo name, like
+    repository_list = [
+        ("shafiab", "HashtagCashtag"),
+        ("anpigon", "obsidian-book-search-plugin"),
+        # Add more tuples (owner, repository) as needed
+    ]
+    """
+    token = os.getenv('GITHUB_API_TOKEN')
+
+    # repository_list = [
+    #     ("shafiab", "HashtagCashtag"),
+    #     ("anpigon", "obsidian-book-search-plugin"),
+    #     # Add more tuples (owner, repository) as needed
+    # ]
+
+    # Function to execute GraphQL queries
+    def run_query(query, headers):
+        """Function to execute GraphQL queries."""
+        request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
+        if request.status_code == 200:
+            return request.json()
+        else:
+            raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+
+    def construct_query(repository_list, cursors):
+        """Function to construct a batch query for a chunk of repositories."""
+        query_parts = []
+        for idx, (owner, repo) in enumerate(repository_list):
+            after_cursor = cursors.get(f"{owner}/{repo}", None)
+            after_part = f', after: "{after_cursor}"' if after_cursor else ''
+            query_parts.append(f'''
+            repo{idx}: repository(owner: "{owner}", name: "{repo}") {{
+                stargazers(first: 100{after_part}) {{
+                    pageInfo {{
+                        endCursor
+                        hasNextPage
+                    }}
+                    edges {{
+                        starredAt
+                    }}
+                }}
+            }}''')
+        query_parts.append('''
+            rateLimit {
+                cost
+                remaining
+                resetAt
+            }
+        ''')
+        return "{" + " ".join(query_parts) + "}"
+
+    def chunk_repository_list(repository_list, chunk_size=100):
+        """Yield successive chunk_size chunks from repository_list."""
+        for i in range(0, len(repository_list), chunk_size):
+            yield repository_list[i:i + chunk_size]
+
+    def fetch_all_stargazers(repository_list):
+        """Main function to fetch all stargazers' timestamps for all repository chunks."""
+        all_stargazers = {}
+        cursors = {}
+        headers = {"Authorization": f"Bearer {token}"}
+
+        for repo_chunk in chunk_repository_list(repository_list):
+            has_next_pages = {f"{owner}/{repo}": True for owner, repo in repo_chunk}
+
+            while any(has_next_pages.values()):
+                query = construct_query(repo_chunk, cursors)
+                result = run_query(query, headers)
+                print(result['data']['rateLimit'])
+
+                for idx, (owner, repo) in enumerate(repo_chunk):
+                    key = f"{owner}/{repo}"
+                    repo_data = result['data'].get(f'repo{idx}', {})
+                    if not repo_data:
+                        continue
+                    stargazers_data = repo_data['stargazers']
+                    pageInfo = stargazers_data['pageInfo']
+                    edges = stargazers_data['edges']
+                    
+                    if key not in all_stargazers:
+                        all_stargazers[key] = [edge['starredAt'] for edge in edges]
+                    else:
+                        all_stargazers[key].extend([edge['starredAt'] for edge in edges])
+
+                    if pageInfo['hasNextPage']:
+                        cursors[key] = pageInfo['endCursor']
+                    else:
+                        has_next_pages[key] = False
+
+        return all_stargazers
+
+    stargazers_timestamps = fetch_all_stargazers(repository_list)
+
+    return stargazers_timestamps
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+
+    repository_list = [
+        ("shafiab", "HashtagCashtag"),
+        ("anpigon", "obsidian-book-search-plugin"),
+        # Add more tuples (owner, repository) as needed
+    ]
+
+    assert output is not None, 'The output is undefined'

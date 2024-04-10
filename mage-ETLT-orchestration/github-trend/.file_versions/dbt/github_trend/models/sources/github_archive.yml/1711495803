@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: github_archive
+    database: githubarchive
+    schema: day
+    description: "GH Archive data, partitioned by day."
+    tables:
+      - name: dynamic_day
+        description: "A placeholder for dynamic day tables in the GH Archive dataset."

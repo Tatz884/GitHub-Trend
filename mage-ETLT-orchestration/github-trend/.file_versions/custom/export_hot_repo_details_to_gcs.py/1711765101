@@ -1,0 +1,44 @@
+from google.cloud import storage
+import json
+if 'custom' not in globals():
+    from mage_ai.data_preparation.decorators import custom
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+
+@custom
+def transform_custom(repo_details, *args, **kwargs):
+    """
+    args: The output from any upstream parent blocks (if applicable)
+
+    Returns:
+        Anything (e.g. data frame, dictionary, array, int, str, etc.)
+    """
+    # Specify your custom logic here
+    execution_date = kwargs['execution_date']
+    json_name = 'hot_repo_details.json'
+
+    # Convert dictionary to JSON and save to a file
+    with open(json_name, 'w') as json_file:
+        json.dump(repo_details, json_file)
+
+    # Initialize a client
+    storage_client = storage.Client.from_service_account_json("/home/src/secrets/gcp-credentials")
+    bucket_name = 'github-trend-data'
+    bucket = storage_client.bucket(bucket_name)
+
+    
+
+    # Name of the file in your bucket
+    blob = bucket.blob(f'{execution_date}/{json_name}')
+    blob.upload_from_filename(f'{json_name}')
+
+    return {}
+
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'

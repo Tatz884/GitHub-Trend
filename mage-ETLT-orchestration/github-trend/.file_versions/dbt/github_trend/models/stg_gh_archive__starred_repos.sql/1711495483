@@ -1,0 +1,23 @@
+-- models/starring_events.sql
+
+WITH StarredRepos AS (
+  SELECT
+    JSON_EXTRACT_SCALAR(payload, '$.repo.name') AS repo_name,
+    COUNT(*) AS stars_gained,
+    FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)) AS event_date
+  FROM
+    `{{ source('github_archive', 'day') }}`
+  WHERE
+    _TABLE_SUFFIX = FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)) AND
+    type = 'WatchEvent'
+  GROUP BY
+    repo_name, event_date
+)
+
+SELECT
+  repo_name,
+  stars_gained
+FROM
+  StarredRepos
+WHERE
+  stars_gained >= 100

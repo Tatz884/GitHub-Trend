@@ -1,0 +1,99 @@
+import io
+import pandas as pd
+import requests
+import os
+import json
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+
+@data_loader
+def load_data_from_api(*args, **kwargs):
+    """
+    Template for loading data from API
+    """
+    endpoint = 'https://api.github.com/graphql'
+    token = os.getenv('GITHUB_API_TOKEN')
+
+    graphql_query = {
+        "query": """
+            {
+                search(query: "is:public stars:>1000", type: REPOSITORY, first: 100) {
+                    edges {
+                        node {
+                            ... on Repository {
+                                name
+                                owner {
+                                    login
+                                    avatarUrl(size: 16)
+                                }
+                                stargazers {
+                                    totalCount
+                                }
+                                url
+                                primaryLanguage {
+                                    name
+                                }
+                                repositoryTopics(first: 30) {
+                                    nodes {
+                                        topic {
+                                            name
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        """
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {token}',
+    }
+
+    response = requests.post(endpoint, headers=headers, json=graphql_query)
+
+
+    try:
+        # Convert response to JSON
+        response_data = response.json()
+
+        # Initialize a list to hold our formatted data
+        data = []
+
+        # Loop through each repository in the response
+        for edge in response_data['data']['search']['edges']:
+            repo = edge['node']
+
+            # Extract the topics into a comma-separated string
+            topics = ', '.join([node['topic']['name'] for node in repo['repositoryTopics']['nodes']])
+
+            # Append the relevant data as a tuple
+            data.append((
+                f"{repo['owner']['login']}/{repo['name']}",  # owner/repo
+                repo['owner']['avatarUrl'],                  # ownerPictureUrl
+                repo['primaryLanguage']['name'] if repo['primaryLanguage'] else None,  # primaryLanguage
+                repo['stargazers']['totalCount'],            # starCount
+                topics                                       # topics
+            ))
+
+        # Convert the list of tuples into a DataFrame
+        df = pd.DataFrame(data, columns=['repo_name', 'owner_picture_url', 'primary_language', 'star_count', 'topics'])
+
+        return df
+    except Exception as error:
+        print('Error:', error)
+        return None
+
+
+# @test
+# def test_output(output, *args) -> None:
+#     """
+#     Template code for testing the output of the block.
+#     """
+#     assert output is not None, 'The output is undefined'

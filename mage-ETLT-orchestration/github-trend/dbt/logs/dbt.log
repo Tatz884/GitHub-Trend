@@ -1,0 +1,173 @@
+[0m22:50:33.932950 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff3fd99f8e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff3fb1ba830>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff3fb1ba7d0>]}
+
+
+============================== 22:50:33.948552 | 9bcd81f1-f4e3-4f67-8344-2798d6b47ed2 ==============================
+[0m22:50:33.948552 [info ] [MainThread]: Running with dbt=1.7.4
+[0m22:50:33.950973 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/root/.dbt', 'debug': 'False', 'version_check': 'True', 'log_path': 'logs', 'warn_error': 'None', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt init', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m22:50:33.953766 [warn ] [MainThread]: [ConfigFolderDirectory]: Unable to parse dict {'dir': PosixPath('/root/.dbt')}
+[0m22:50:33.956048 [info ] [MainThread]: Creating dbt configuration folder at 
+[0m22:50:57.160294 [debug] [MainThread]: Starter project path: /usr/local/lib/python3.10/site-packages/dbt/include/starter_project
+[0m22:50:57.195598 [info ] [MainThread]: 
+Your new dbt project "github_trend" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m22:50:57.197485 [info ] [MainThread]: Setting up your profile.
+[0m22:56:04.090777 [info ] [MainThread]: Profile github_trend written to /root/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m22:56:04.094613 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 330.16965, "process_user_time": 14.411793, "process_kernel_time": 5.175783, "process_mem_max_rss": "251548", "process_in_blocks": "45120", "process_out_blocks": "104"}
+[0m22:56:04.097400 [debug] [MainThread]: Command `dbt init` succeeded at 22:56:04.096620 after 330.17 seconds
+[0m22:56:04.099305 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff3fd99f8e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff3fb1ba860>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff3fb1ba710>]}
+[0m22:56:04.102146 [debug] [MainThread]: Flushing usage events
+[0m22:57:37.940620 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7effa483f8e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7effa1f066b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7effa1f065c0>]}
+
+
+============================== 22:57:37.949946 | dda7522a-f8e6-4448-be4f-21bc7a32003c ==============================
+[0m22:57:37.949946 [info ] [MainThread]: Running with dbt=1.7.4
+[0m22:57:37.952967 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'debug': 'False', 'log_path': 'logs', 'profiles_dir': '/root/.dbt', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'invocation_command': 'dbt debug', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m22:57:37.957261 [info ] [MainThread]: dbt version: 1.7.4
+[0m22:57:37.960440 [info ] [MainThread]: python version: 3.10.13
+[0m22:57:37.963508 [info ] [MainThread]: python path: /usr/local/bin/python
+[0m22:57:37.966335 [info ] [MainThread]: os info: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.36
+[0m22:57:42.943263 [info ] [MainThread]: Using profiles dir at /root/.dbt
+[0m22:57:42.949471 [info ] [MainThread]: Using profiles.yml file at /root/.dbt/profiles.yml
+[0m22:57:42.953768 [info ] [MainThread]: Using dbt_project.yml file at /home/src/github-trend/dbt/dbt_project.yml
+[0m22:57:42.960867 [info ] [MainThread]: adapter type: bigquery
+[0m22:57:42.966552 [info ] [MainThread]: adapter version: 1.7.2
+[0m22:57:42.970847 [info ] [MainThread]: Configuration:
+[0m22:57:42.973413 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m22:57:42.975719 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m22:57:42.977739 [info ] [MainThread]: Required dependencies:
+[0m22:57:42.979790 [debug] [MainThread]: Executing "git --help"
+[0m22:57:42.993062 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--super-prefix=<path>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m22:57:42.995062 [debug] [MainThread]: STDERR: "b''"
+[0m22:57:42.996918 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m22:57:42.998954 [info ] [MainThread]: Connection:
+[0m22:57:43.005210 [info ] [MainThread]:   method: service-account
+[0m22:57:43.009525 [info ] [MainThread]:   database: ringed-reach-414622
+[0m22:57:43.011939 [info ] [MainThread]:   execution_project: ringed-reach-414622
+[0m22:57:43.014074 [info ] [MainThread]:   schema: github_trend
+[0m22:57:43.016478 [info ] [MainThread]:   location: US
+[0m22:57:43.019568 [info ] [MainThread]:   priority: interactive
+[0m22:57:43.027483 [info ] [MainThread]:   maximum_bytes_billed: None
+[0m22:57:43.029471 [info ] [MainThread]:   impersonate_service_account: None
+[0m22:57:43.031463 [info ] [MainThread]:   job_retry_deadline_seconds: None
+[0m22:57:43.033573 [info ] [MainThread]:   job_retries: 1
+[0m22:57:43.035436 [info ] [MainThread]:   job_creation_timeout_seconds: None
+[0m22:57:43.038422 [info ] [MainThread]:   job_execution_timeout_seconds: 300
+[0m22:57:43.042540 [info ] [MainThread]:   keyfile: bind 'set enable-bracketed-paste off' # Mage terminal settings command
+[0m22:57:43.044751 [info ] [MainThread]:   timeout_seconds: 300
+[0m22:57:43.047565 [info ] [MainThread]:   refresh_token: None
+[0m22:57:43.049813 [info ] [MainThread]:   client_id: None
+[0m22:57:43.052445 [info ] [MainThread]:   token_uri: None
+[0m22:57:43.054869 [info ] [MainThread]:   dataproc_region: None
+[0m22:57:43.057002 [info ] [MainThread]:   dataproc_cluster_name: None
+[0m22:57:43.059118 [info ] [MainThread]:   gcs_bucket: None
+[0m22:57:43.061593 [info ] [MainThread]:   dataproc_batch: None
+[0m22:57:43.065977 [info ] [MainThread]: Registered adapter: bigquery=1.7.2
+[0m22:57:43.072123 [debug] [MainThread]: Acquiring new bigquery connection 'debug'
+[0m22:57:43.073940 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m22:57:43.076497 [debug] [MainThread]: BigQuery adapter: Got an error when attempting to create a bigquery client: '[Errno 2] No such file or directory: "bind 'set enable-bracketed-paste off' # Mage terminal settings command"'
+[0m22:57:43.078683 [info ] [MainThread]:   Connection test: [[31mERROR[0m]
+
+[0m22:57:43.080698 [info ] [MainThread]: [31m2 checks failed:[0m
+[0m22:57:43.084059 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/src/github-trend/dbt/dbt_project.yml> not found
+
+[0m22:57:43.087717 [info ] [MainThread]: dbt was unable to connect to the specified database.
+The database returned the following error:
+
+  >Database Error
+  [Errno 2] No such file or directory: "bind 'set enable-bracketed-paste off' # Mage terminal settings command"
+
+Check your database credentials and try again. For more information, visit:
+https://docs.getdbt.com/docs/configure-your-profile
+
+
+[0m22:57:43.092150 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_wall_clock_time": 5.369708, "process_user_time": 15.435102, "process_kernel_time": 2.649159, "process_mem_max_rss": "256068", "process_in_blocks": "40", "process_out_blocks": "32", "command_success": false}
+[0m22:57:43.095042 [debug] [MainThread]: Command `dbt debug` failed at 22:57:43.094176 after 5.37 seconds
+[0m22:57:43.097090 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m22:57:43.099290 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7effa483f8e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7eff6b2b6110>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7eff6b2f60b0>]}
+[0m22:57:43.101724 [debug] [MainThread]: Flushing usage events
+[0m23:03:52.676316 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f297a6fb8e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f2977dc26b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f2977dc2650>]}
+
+
+============================== 23:03:52.688405 | f5ea2345-c51a-4d96-8f5e-2f49afe30c93 ==============================
+[0m23:03:52.688405 [info ] [MainThread]: Running with dbt=1.7.4
+[0m23:03:52.691373 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'debug': 'False', 'log_path': 'logs', 'version_check': 'True', 'profiles_dir': '/root/.dbt', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'invocation_command': 'dbt debug', 'introspect': 'True', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m23:03:52.694267 [info ] [MainThread]: dbt version: 1.7.4
+[0m23:03:52.700123 [info ] [MainThread]: python version: 3.10.13
+[0m23:03:52.702348 [info ] [MainThread]: python path: /usr/local/bin/python
+[0m23:03:52.704634 [info ] [MainThread]: os info: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.36
+[0m23:03:57.120580 [info ] [MainThread]: Using profiles dir at /root/.dbt
+[0m23:03:57.122083 [info ] [MainThread]: Using profiles.yml file at /root/.dbt/profiles.yml
+[0m23:03:57.124064 [info ] [MainThread]: Using dbt_project.yml file at /home/src/github-trend/dbt/dbt_project.yml
+[0m23:03:57.130220 [info ] [MainThread]: adapter type: bigquery
+[0m23:03:57.133419 [info ] [MainThread]: adapter version: 1.7.2
+[0m23:03:57.136494 [info ] [MainThread]: Configuration:
+[0m23:03:57.139374 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m23:03:57.143506 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m23:03:57.146592 [info ] [MainThread]: Required dependencies:
+[0m23:03:57.148742 [debug] [MainThread]: Executing "git --help"
+[0m23:03:57.154646 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--super-prefix=<path>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m23:03:57.156082 [debug] [MainThread]: STDERR: "b''"
+[0m23:03:57.157156 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m23:03:57.159223 [info ] [MainThread]: Connection:
+[0m23:03:57.161828 [info ] [MainThread]:   method: service-account
+[0m23:03:57.163745 [info ] [MainThread]:   database: ringed-reach-414622
+[0m23:03:57.166037 [info ] [MainThread]:   execution_project: ringed-reach-414622
+[0m23:03:57.167988 [info ] [MainThread]:   schema: github_trend
+[0m23:03:57.169890 [info ] [MainThread]:   location: US
+[0m23:03:57.171662 [info ] [MainThread]:   priority: interactive
+[0m23:03:57.175600 [info ] [MainThread]:   maximum_bytes_billed: None
+[0m23:03:57.177979 [info ] [MainThread]:   impersonate_service_account: None
+[0m23:03:57.180324 [info ] [MainThread]:   job_retry_deadline_seconds: None
+[0m23:03:57.182469 [info ] [MainThread]:   job_retries: 1
+[0m23:03:57.184546 [info ] [MainThread]:   job_creation_timeout_seconds: None
+[0m23:03:57.186557 [info ] [MainThread]:   job_execution_timeout_seconds: 300
+[0m23:03:57.189689 [info ] [MainThread]:   keyfile: bind 'set enable-bracketed-paste off' # Mage terminal settings command
+[0m23:03:57.194300 [info ] [MainThread]:   timeout_seconds: 300
+[0m23:03:57.196771 [info ] [MainThread]:   refresh_token: None
+[0m23:03:57.199190 [info ] [MainThread]:   client_id: None
+[0m23:03:57.201645 [info ] [MainThread]:   token_uri: None
+[0m23:03:57.203897 [info ] [MainThread]:   dataproc_region: None
+[0m23:03:57.205961 [info ] [MainThread]:   dataproc_cluster_name: None
+[0m23:03:57.213280 [info ] [MainThread]:   gcs_bucket: None
+[0m23:03:57.216047 [info ] [MainThread]:   dataproc_batch: None
+[0m23:03:57.218071 [info ] [MainThread]: Registered adapter: bigquery=1.7.2
+[0m23:03:57.221835 [debug] [MainThread]: Acquiring new bigquery connection 'debug'
+[0m23:03:57.223824 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m23:03:57.227941 [debug] [MainThread]: BigQuery adapter: Got an error when attempting to create a bigquery client: '[Errno 2] No such file or directory: "bind 'set enable-bracketed-paste off' # Mage terminal settings command"'
+[0m23:03:57.230728 [info ] [MainThread]:   Connection test: [[31mERROR[0m]
+
+[0m23:03:57.232804 [info ] [MainThread]: [31m2 checks failed:[0m
+[0m23:03:57.235620 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/src/github-trend/dbt/dbt_project.yml> not found
+
+[0m23:03:57.237757 [info ] [MainThread]: dbt was unable to connect to the specified database.
+The database returned the following error:
+
+  >Database Error
+  [Errno 2] No such file or directory: "bind 'set enable-bracketed-paste off' # Mage terminal settings command"
+
+Check your database credentials and try again. For more information, visit:
+https://docs.getdbt.com/docs/configure-your-profile
+
+
+[0m23:03:57.241201 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_wall_clock_time": 4.770073, "process_user_time": 13.658478, "process_kernel_time": 2.761935, "process_mem_max_rss": "254080", "process_out_blocks": "24", "command_success": false, "process_in_blocks": "0"}
+[0m23:03:57.244645 [debug] [MainThread]: Command `dbt debug` failed at 23:03:57.243615 after 4.77 seconds
+[0m23:03:57.247298 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m23:03:57.249158 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f297a6fb8e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f29451e67d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f29450249d0>]}
+[0m23:03:57.251175 [debug] [MainThread]: Flushing usage events

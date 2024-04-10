@@ -1,0 +1,21 @@
+sources:
+- description: Dataframes Mage upstream blocks
+  loader: mage
+  name: mage_github_trend
+  schema: github_trend
+  tables:
+  - description: Dataframe for block `export_hot_repo_details_to_bq` of the `load_bq_gh_archive_to_mage`
+      mage pipeline.
+    identifier: mage_load_bq_gh_archive_to_mage_export_hot_repo_details_to_bq
+    meta:
+      block_uuid: export_hot_repo_details_to_bq
+      pipeline_uuid: load_bq_gh_archive_to_mage
+    name: load_bq_gh_archive_to_mage_export_hot_repo_details_to_bq
+  - description: Dataframe for block `export_top_repo_details_to_bq` of the `load_bq_gh_archive_to_mage`
+      mage pipeline.
+    identifier: mage_load_bq_gh_archive_to_mage_export_top_repo_details_to_bq
+    meta:
+      block_uuid: export_top_repo_details_to_bq
+      pipeline_uuid: load_bq_gh_archive_to_mage
+    name: load_bq_gh_archive_to_mage_export_top_repo_details_to_bq
+version: 2

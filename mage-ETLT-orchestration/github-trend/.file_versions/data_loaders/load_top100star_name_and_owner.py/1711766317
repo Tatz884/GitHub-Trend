@@ -1,0 +1,73 @@
+import io
+import pandas as pd
+import requests
+import os
+import json
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+
+@data_loader
+def load_data_from_api(*args, **kwargs):
+    """
+    Template for loading data from API
+    """
+    endpoint = 'https://api.github.com/graphql'
+    token = os.getenv('GITHUB_API_TOKEN')
+
+    graphql_query = {
+        "query": """
+            {
+                search(query: "is:public stars:>1000", type: REPOSITORY, first: 10) {
+                    edges {
+                        node {
+                            ... on Repository {
+                                name
+                                owner {
+                                    login
+                                    avatarUrl
+                                }
+                                stargazers {
+                                    totalCount
+                                }
+                                url
+                                primaryLanguage {
+                                    name
+                                }
+                                repositoryTopics(first: 10) {
+                                    nodes {
+                                        topic {
+                                            name
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        """
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {token}',
+    }
+
+    response = requests.post(endpoint, headers=headers, json=graphql_query)
+
+    try:
+        response_data = response.json()
+        return response_data['data']
+    except Exception as error:
+        print('Error:', error)
+
+
+# @test
+# def test_output(output, *args) -> None:
+#     """
+#     Template code for testing the output of the block.
+#     """
+#     assert output is not None, 'The output is undefined'

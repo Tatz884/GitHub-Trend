@@ -1,0 +1,26 @@
+Batch query (i.e. typing the multiple queries of the same data format within a query) saves the cost of rate limit consumption.
+
+Use something like below to calculate the rate limit consumption 
+```python
+query BatchQuery {
+  Repository1: repository(owner: "freeCodeCamp", name: "freeCodeCamp") {
+    name
+    primaryLanguage {
+      name
+    }
+  }
+  Repository2: repository(owner: "EbookFoundation", name: "free-programming-books") {
+    name
+    primaryLanguage {
+      name
+    }
+  }
+  # Add more repositories as needed
+  
+  rateLimit {
+    cost
+    remaining
+    resetAt
+  }
+}
+```

@@ -1,0 +1,24 @@
+-- models/starring_events.sql
+{% set yesterday = modules.datetime.datetime.now() - modules.datetime.timedelta(days=1) %}
+{% set formatted_yesterday = yesterday.strftime('%Y%m%d') %}
+
+
+WITH StarredRepos AS (
+  SELECT
+    repo.name AS repo_name,
+    COUNT(*) AS stars_gained
+  FROM
+    `githubarchive.day.{{ formatted_yesterday }}`
+  WHERE
+    type = 'WatchEvent'
+  GROUP BY
+    repo_name
+)
+
+SELECT
+  repo_name,
+  stars_gained
+FROM
+  StarredRepos
+WHERE
+  stars_gained >= 100

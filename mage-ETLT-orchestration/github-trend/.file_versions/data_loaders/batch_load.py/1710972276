@@ -1,0 +1,78 @@
+import io
+import pandas as pd
+import requests
+import json
+import os
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+@data_loader
+def load_data_from_api(*args, **kwargs):
+    """
+    Template for loading data from API
+    """
+    token = os.getenv('GITHUB_API_TOKEN')
+
+    # Function to execute a single GraphQL query
+    def run_query(query, headers, variables=None):
+        request = requests.post('https://api.github.com/graphql', json={'query': query, 'variables': variables}, headers=headers)
+        if request.status_code == 200:
+            return request.json()
+        else:
+            raise Exception(f"Query failed to run by returning code of {request.status_code}. {query}")
+
+    # GraphQL query template for fetching stargazers
+    query = """
+    {
+        repository(owner: "nschloe", name: "github-trends") {
+            stargazers (first: 100, after: AFTER) {
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                }
+                edges {
+                    starredAt
+                }
+            }
+        }
+          rateLimit {
+        cost
+        remaining
+        resetAt
+    }
+
+    }
+    """
+
+    # Replace 'AFTER' placeholder in the query with the actual endCursor for pagination
+    def make_query(after_cursor=None):
+        if after_cursor:
+            return query.replace('AFTER', f'"{after_cursor}"')
+        else:
+            return query.replace(', after: AFTER', '')
+
+    # Main function to fetch all stargazers with their starredAt timestamp
+    def fetch_all_stargazers():
+        stargazers_timestamps = []
+        end_cursor = None
+        has_next_page = True
+        headers = {"Authorization": f'Bearer {token}'}
+
+        while has_next_page:
+            formatted_query = make_query(end_cursor)
+            result = run_query(formatted_query, headers)
+            stargazers = result['data']['repository']['stargazers']['edges']
+            page_info = result['data']['repository']['stargazers']['pageInfo']
+            
+            stargazers_timestamps.extend([stargazer['starredAt'] for stargazer in stargazers])
+            
+            end_cursor = page_info['endCursor']
+            has_next_page = page_info['hasNextPage']
+
+        return stargazers_timestamps
+
+    # Execute
+    stargazers_timestamps = fetch_all_stargazers()
+    print(stargazers_timestamps)

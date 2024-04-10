@@ -1,0 +1,41 @@
+# version: 2
+# sources:
+#   - name: github_archive
+#     database: githubarchive
+#     schema: day
+#     description: "GH Archive data, partitioned by day."
+#     tables:
+#       - name: dynamic_day
+#         description: "A placeholder for dynamic day tables in the GH Archive dataset."
+#   - name: github_trend
+#     database: ringed-reach-414622
+#     schema: github_trend
+#     description: "GH Archive data, partitioned by day."
+#     tables:
+#       - name: hot_repo_details
+#         description: "list of repositories with more than 100 stars earned yesterday"
+#       - name: top_repo_details
+#         description: "list of repositories with top numbers of cumulative stars"
+
+
+
+version: 2
+
+models:
+  - name: hot_repo_details
+    description: "list of repositories with more than 100 stars earned yesterday"
+    # columns:
+    #   - name: id
+    #     description: "The primary key for this table"
+    #     tests:
+    #       - unique
+    #       - not_null
+
+  - name: top_repo_details
+    description: "list of repositories with top numbers of cumulative stars"
+    # columns:
+    #   - name: id
+    #     description: "The primary key for this table"
+    #     tests:
+    #       - unique
+    #       - not_null

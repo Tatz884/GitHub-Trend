@@ -1,0 +1,85 @@
+import io
+import pandas as pd
+import requests
+import json
+import os
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+@data_loader
+def load_data_from_api(*args, **kwargs):
+    """
+    Template for loading data from API
+    """
+    token = os.getenv('GITHUB_API_TOKEN')
+
+    repository_list = [
+        ("nschloe", "repo1"),
+        ("nschloe", "meshio"),
+        # Add more tuples (owner, repository) as needed
+    ]
+
+    # Function to execute GraphQL queries
+    def run_query(query, headers):
+        request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
+        if request.status_code == 200:
+            return request.json()
+        else:
+            raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+
+    # Function to construct a batch query for all repositories
+    def construct_query(repository_list, cursors):
+        query_parts = []
+        for idx, (owner, repo) in enumerate(repository_list):
+            after_cursor = cursors.get(f"{owner}/{repo}", None)
+            after_part = f', after: "{after_cursor}"' if after_cursor else ''
+            query_parts.append(f'''
+            repo{idx}: repository(owner: "{owner}", name: "{repo}") {{
+                stargazers(first: 100{after_part}) {{
+                    pageInfo {{
+                        endCursor
+                        hasNextPage
+                    }}
+                    edges {{
+                        starredAt
+                    }}
+                }}
+            }}''')
+        return "{" + " ".join(query_parts) + "}"
+
+    # Main function to fetch all stargazers' timestamps for all repositories
+    def fetch_all_stargazers(repository_list):
+        all_stargazers = {}
+        cursors = {}
+        headers = {"Authorization": f"Bearer {token}"}
+        has_next_pages = {f"{owner}/{repo}": True for owner, repo in repository_list}
+
+        while any(has_next_pages.values()):
+            query = construct_query(repository_list, cursors)
+            result = run_query(query, headers)
+            for idx, (owner, repo) in enumerate(repository_list):
+                key = f"{owner}/{repo}"
+                repo_data = result['data'].get(f'repo{idx}', {})
+                if not repo_data:  # Skip if no data is returned for a repo
+                    continue
+                stargazers_data = repo_data['stargazers']
+                pageInfo = stargazers_data['pageInfo']
+                edges = stargazers_data['edges']
+                
+                if key not in all_stargazers:
+                    all_stargazers[key] = [edge['starredAt'] for edge in edges]
+                else:
+                    all_stargazers[key].extend([edge['starredAt'] for edge in edges])
+
+                if pageInfo['hasNextPage']:
+                    cursors[key] = pageInfo['endCursor']
+                else:
+                    has_next_pages[key] = False
+
+        return all_stargazers
+
+    # Execute the script
+    stargazers_timestamps = fetch_all_stargazers(repository_list)
+    print(stargazers_timestamps)

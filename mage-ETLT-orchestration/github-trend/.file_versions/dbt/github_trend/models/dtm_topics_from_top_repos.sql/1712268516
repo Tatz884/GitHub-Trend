@@ -1,0 +1,16 @@
+WITH split_topics AS (
+  SELECT
+    topic, repo_name
+     -- UNNEST and SPLIT functions may vary by SQL dialect
+  FROM
+    `ringed-reach-414622.github_trend.top_repo_details`, -- Replace with your actual table name
+    REGEXP_REPLACE(UNNEST(SPLIT(topics, ',')), ' ' AS topic
+)
+
+SELECT
+  topic,
+  repo_name
+FROM
+  split_topics
+ORDER BY
+  topic, repo_name
