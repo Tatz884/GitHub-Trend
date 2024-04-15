@@ -1,6 +1,14 @@
 # GitHub Trend
 
-Visualization of technology trend, updating regularly.
+GitHub is the platform where developers create, store and share the code. It is a popular website to host the open source software. Softwares are housed in the repositories. By tracking popular repositories, we can get to know the trend of software technology now. 
+
+To catch the popular topics and languages in GitHub on a regular basis, I created this dashboard. This dashboard tracks two major types of popular repositories - ones that have the highest acccumulative number of stars, called **top repos**, and the other that acquired more than 100 stars at the day before the update of this dashboard, called **hot repos**. By knowing these two types of repositories, I expect to be able to grasp overall trend of software technology.
+
+## Dashboard
+
+[The link to running dashboard](https://lookerstudio.google.com/s/gtrvrMCNeI0)
+
+[![Dashboard Image](./assets/dashboard.png)](https://lookerstudio.google.com/s/gtrvrMCNeI0)
 
 ## What questions does this dashboard address?
 
@@ -8,11 +16,6 @@ Visualization of technology trend, updating regularly.
 - What languages are used in popular repositories? 
 - What topics are common across popular repositories?
 
-## Dashboard
-
-[The link to running dashboard](https://lookerstudio.google.com/s/gtrvrMCNeI0)
-
-[![Dashboard Image](./assets/dashboard.png)](https://lookerstudio.google.com/s/gtrvrMCNeI0)
 
 ## Data Pipeline
 
@@ -33,5 +36,21 @@ This is the batch data pipeline. The data update is scheduled everyday until the
 3. Join all the data in BigQuery
 4. Display the data on Looker Studio dashboard
 
-## Contribution
+## Replication
+
+Firstly, clone this Git repository by:
+```
+git clone https://github.com/Tatz884/GitHub-Trend.git
+```
+
+Then run Docker Compose to install docker image and set up the container:
+```
+docker compose up
+```
+
+To edit the pipeline using Mage UI, open http:/localhost:6789/ after running the Docker container.
+
+To obtain the data from GitHub API, you will also need the GitHub token.
+
+To connect to data warehouse (BigQuery), you will also need the GCP service account key, necessary permissions, and store the secret in Google Cloud Secret Manager.
 
